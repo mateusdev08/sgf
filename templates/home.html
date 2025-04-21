@@ -7,7 +7,47 @@
     <h1 class="display-6">Sistema de Gestão Financeira - SGF</h1>
     <p class="lead">Bem-vindo ao SGF, o sistema que organizará a sua vida financeira.</p>
     <hr class="my-4">
-    <p>Escolha uma das opções abaixo para começar:</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'conta:list' %}" role="button">Conta</a>
+    <p>Área de Relatórios BI</p>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Card 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center bg-secondary">
+                    <div class="card-body">
+                        <i class="bi bi-currency-dollar text-light" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3 text-light">BI - Fluxo de Caixa</h5>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiMmFhMmZlMTctMzY3NS00ZTc3LWE2Y2EtODM2OTNjZWU2ODA3IiwidCI6ImM2MmY1NjA5LTFmMmUtNGE5OC04ZTMwLWZkY2MxOTJkMjY2YiJ9" class="btn btn-info" target="_blank">Acessar</a>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Card 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center bg-secondary">
+                    <div class="card-body">
+                        <i class="bi bi-currency-dollar text-light" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3 text-light">BI - ...</h5>
+                        <a href="#" class="btn btn-info">Acessar</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="card text-center bg-secondary">
+                    <div class="card-body">
+                        <i class="bi bi-currency-dollar text-light" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3 text-light">BI - ...</h5>
+                        <a href="#" class="btn btn-info">Acessar</a>
+                    </div>
+                </div>
+            </div>
+    
+        <!-- Linha para adicionar mais cards -->
+        <div class="row">
+          <!-- Aqui você pode adicionar mais cards da mesma maneira -->
+        </div>
+    </div>
 </div>
 {% endblock %}
