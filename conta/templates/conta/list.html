@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Contas{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert 
+            {% if message.tags == 'error' %}alert-danger
+            {% elif message.tags == 'info' %}alert-primary
+            {% elif message.tags == 'success' %}alert-success
+            {% else %}alert-secondary{% endif %}
+            alert-dismissible fade show" role="alert">
+            <span class="me-2">•</span>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2> Contas</h2>
+    <a href="{% url 'conta:create' %}" class="btn btn-success bi bi-plus-square"> Nova Conta</a>
+</div>
+
+<!-- Filtro Select-->
+<div class="row mb-3">
+    <div class="col-md-6">
+        <form method="get" action="{% url 'conta:list' %}">
+            <div class="input-group">
+                <select class="form-select" name="conta">
+                    <option value="" {% if not request.GET.conta %} selected {% endif %}>----</option>
+
+                    {% for itens in conta %}
+                        <!-- <option value="{{ itens.id }}" {% if request.GET.conta == itens.id %} selected {% endif %}>{{ itens.conta }}</option> -->
+                        <option value="{{ itens.id }}" {% if request.GET.conta == itens.id|stringformat:"s" %} selected {% endif %}>{{ itens.conta }}</option>
+                    {% endfor %}
+
+                </select>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-filter"></i> Filtrar
+                </button>
+                {% if request.GET.conta %}
+                    <a href="{% url 'conta:list' %}" class="btn btn-danger">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body"> <!-- Adicionar a class table-responsive -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Conta</th>
+                    <th>Saldo Inicial</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for conta in contas %}
+                <tr>
+                    <td>{{ conta.conta }}</td>
+                    <td>R$ {{ conta.saldo_inicial }}</td>
+                    <td>
+                        <a href="{% url 'conta:detail' conta.id %}" class="btn btn-sm btn-info bi bi-eye"></a>
+                        <a href="{% url 'conta:update' conta.id %}" class="btn btn-sm btn-warning bi bi-pencil"></a>
+                        <a href="{% url 'conta:delete' conta.id %}" class="btn btn-sm btn-danger bi bi-trash3"></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">Nenhuma conta cadastrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+<!-- Paginação -->
+{% if is_paginated %}
+    <nav aria-label="Navegação de páginas">
+        <ul class="pagination justify-content-center mt-4">
+            <!-- Botão Anterior -->
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.conta %}&conta={{ request.GET.conta }}{% endif %}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            
+            <!-- Páginas Numeradas -->
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ num }}{% if request.GET.conta %}&conta={{ request.GET.conta }}{% endif %}">{{ num }}</a>
+                    </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% if request.GET.conta %}&conta={{ request.GET.conta }}{% endif %}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
+            <!-- Botão Próximo -->
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.conta %}&conta={{ request.GET.conta }}{% endif %}" aria-label="Próximo">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Próximo">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+
+<div class="mb-3 text-center">
+    <small class="text-muted">
+        Exibindo {{ page_obj.start_index }} - {{ page_obj.end_index }} de {{ paginator.count }} registro(s)
+    </small>
+</div>
+
+    </div>
+</div>
+{% endblock %}

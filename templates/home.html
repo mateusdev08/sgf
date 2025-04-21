@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-6">Sistema de Gestão Financeira - SGF</h1>
+    <p class="lead">Bem-vindo ao SGF, o sistema que organizará a sua vida financeira.</p>
+    <hr class="my-4">
+    <p>Escolha uma das opções abaixo para começar:</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'conta:list' %}" role="button">Conta</a>
+</div>
+{% endblock %}
