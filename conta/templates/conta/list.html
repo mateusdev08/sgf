@@ -20,7 +20,6 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2> Contas</h2>
-    <a href="{% url 'conta:create' %}" class="btn btn-success bi bi-plus-square"> Nova Conta</a>
 </div>
 
 <!-- Filtro Select-->
@@ -48,6 +47,10 @@
             </div>
         </form>
     </div>
+</div>
+
+<div class="d-flex mb-4">
+    <a href="{% url 'conta:create' %}" class="btn btn-success ms-auto bi bi-plus-square"> Nova Conta</a>
 </div>
 
 <div class="card">
