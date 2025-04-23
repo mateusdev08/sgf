@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Excluir Movimento{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Confirmação de Exclusão</h3>
+    </div>
+    <div class="card-body">
+        <p>Você tem certeza que deseja excluir o movimento de caixa "{{ object.tipo_movimento }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'movimento_caixa:list' %}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-danger">Sim, excluir</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

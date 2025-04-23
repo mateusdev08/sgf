@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if form.instance.id %}SGF - Editar{% else %}SGF - Novo{% endif %} Movimento
+{% endblock %}
+
+{% block content %}
+{% if form.non_field_errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ form.non_field_errors }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header">
+        <h3>{% if form.instance.id %}Editar{% else %}Novo{% endif %} Movimento de Caixa</h3>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="{{ form.tipo_movimento.id_for_label }}" class="form-label">Tipo do Movimento</label> <!-- Coluna -->
+                {{ form.tipo_movimento }} <!-- Coluna -->
+                {% if form.tipo_movimento.errors %} <!-- Coluna -->
+                <div class="invalid-feedback d-block">
+                    {{ form.tipo_movimento.errors }} <!-- Coluna -->
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'movimento_caixa:list' %}" class="btn btn-secondary">Voltar</a>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
