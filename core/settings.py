@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # Meus APPs
     'conta',
+    'movimento_caixa',
 ]
 
 MIDDLEWARE = [
