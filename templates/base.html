@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<!-- <html lang="pt-br" data-bs-theme="dark"> -->
+{% comment %} <html lang="pt-br"> {% endcomment %}
+<html lang="pt-br" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,7 +81,7 @@
         
         /* Estilo do rodapé */
         .footer {
-            background-color: #f8f9fa;
+            {% comment %} background-color: #f8f9fa; {% endcomment %}
             padding: 15px 0;
             margin-top: auto;
             width: calc(100% - 250px);
@@ -145,6 +145,11 @@
                 <li class="nav-item">
                     <a class="nav-link {% if '/conta/' in request.path %}active{% endif %}" href="{% url 'conta:list' %}">
                         <i class="bi bi-wallet2"></i> Contas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/movimento-caixa/' in request.path %}active{% endif %}" href="{% url 'movimento_caixa:list' %}">
+                        <i class="bi bi-arrow-repeat"></i> Movimento de Caixa
                     </a>
                 </li>
                 <!-- Adicione mais links do menu conforme necessário -->
