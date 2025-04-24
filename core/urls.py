@@ -23,4 +23,5 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('conta/', include('conta.urls')),  # Se for nome composta separe com hífem, ex: plano-contas/
     path('movimento-caixa/', include('movimento_caixa.urls')),
+    path('centro-custo/', include('centro_custo.urls')),
 ]
