@@ -24,4 +24,5 @@ urlpatterns = [
     path('conta/', include('conta.urls')),  # Se for nome composta separe com hífem, ex: plano-contas/
     path('movimento-caixa/', include('movimento_caixa.urls')),
     path('centro-custo/', include('centro_custo.urls')),
+    path('cartao/', include('cartao.urls')),
 ]
