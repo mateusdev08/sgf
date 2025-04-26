@@ -172,6 +172,11 @@
                         <i class="bi bi-file-diff"></i> Status do Movimento
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/forma-pagamento/' in request.path %}active{% endif %}" href="{% url 'forma_pagamento:list' %}">
+                        <i class="bi bi-currency-dollar"></i> Forma de Pagamento
+                    </a>
+                </li>
                 <!-- Adicione mais links do menu conforme necessário -->
             </ul>
         </div>
