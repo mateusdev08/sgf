@@ -162,6 +162,11 @@
                         <i class="bi bi-credit-card-fill"></i> Cartão
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/operacao/' in request.path %}active{% endif %}" href="{% url 'operacao:list' %}">
+                        <i class="bi bi-arrow-repeat"></i> Operação
+                    </a>
+                </li>
                 <!-- Adicione mais links do menu conforme necessário -->
             </ul>
         </div>
