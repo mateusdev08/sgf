@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Detalhes da Operação{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Detalhes da Operação</h3>
+        <div>
+            <a href="{% url 'operacao:update' operacao.id %}" class="btn btn-warning bi bi-pencil"></a>
+            <a href="{% url 'operacao:delete' operacao.id %}" class="btn btn-danger bi bi-trash3"></a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Operação:</dt>
+            <dd class="col-sm-9">{{ operacao.tipo_operacao }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'operacao:list' %}" class="btn btn-secondary">Voltar</a>
+    </div>
+</div>
+{% endblock %}
