@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'cartao',
     'operacao',
     'status_movimento',
+    'forma_pagamento',
 ]
 
 MIDDLEWARE = [
