@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Excluir Status{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Confirmação de Exclusão</h3>
+    </div>
+    <div class="card-body">
+        <p>Você tem certeza que deseja excluir o status do movimento "{{ object.tipo_status }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'status_movimento:list' %}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-danger">Sim, excluir</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
