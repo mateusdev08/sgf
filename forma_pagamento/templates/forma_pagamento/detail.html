@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Detalhes do Pag.{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Detalhes da Forma de Pagamento</h3>
+        <div>
+            <a href="{% url 'forma_pagamento:update' forma.id %}" class="btn btn-warning bi bi-pencil"></a>
+            <a href="{% url 'forma_pagamento:delete' forma.id %}" class="btn btn-danger bi bi-trash3"></a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Forma de Pagamento:</dt>
+            <dd class="col-sm-9">{{ forma.tipo_pagamento }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'forma_pagamento:list' %}" class="btn btn-secondary">Voltar</a>
+    </div>
+</div>
+{% endblock %}
