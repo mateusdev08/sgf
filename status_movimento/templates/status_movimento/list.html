@@ -28,7 +28,7 @@
         <form method="get" action="{% url 'status_movimento:list' %}">
             <div class="input-group">
                 <select class="form-select" name="tipo_status">
-                    <option value="" {% if not request.GET.tipo_status %} selected {% endif %}>----</option>
+                    <option value="" {% if not request.GET.tipo_status %} selected {% endif %}>Status do Movimento</option>
 
                     {% for itens in tipo_status %}
                         <!-- <option value="{{ itens.id }}" {% if request.GET.conta == itens.id %} selected {% endif %}>{{ itens.conta }}</option> -->
