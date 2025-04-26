@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'movimento_caixa',
     'centro_custo',
     'cartao',
+    'operacao',
 ]
 
 MIDDLEWARE = [
