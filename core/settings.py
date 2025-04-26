@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'centro_custo',
     'cartao',
     'operacao',
+    'status_movimento',
 ]
 
 MIDDLEWARE = [
