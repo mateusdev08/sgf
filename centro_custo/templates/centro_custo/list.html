@@ -28,7 +28,7 @@
         <form method="get" action="{% url 'centro_custo:list' %}">
             <div class="input-group">
                 <select class="form-select" name="centro_custo"> <!-- campo -->
-                    <option value="" {% if not request.GET.centro_custo %} selected {% endif %}>----</option> <!-- coluna -->
+                    <option value="" {% if not request.GET.centro_custo %} selected {% endif %}>Centro de Custo</option> <!-- coluna -->
 
                     {% for itens in centro_custo %} <!-- coluna -->
                         <!-- <option value="{{ itens.id }}" {% if request.GET.conta == itens.id %} selected {% endif %}>{{ itens.conta }}</option> -->
