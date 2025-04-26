@@ -27,4 +27,5 @@ urlpatterns = [
     path('cartao/', include('cartao.urls')),
     path('operacao/', include('operacao.urls')),
     path('status-movimento/', include('status_movimento.urls')),
+    path('forma-pagamento/', include('forma_pagamento.urls')),
 ]
