@@ -28,7 +28,7 @@
         <form method="get" action="{% url 'movimento_caixa:list' %}">
             <div class="input-group">
                 <select class="form-select" name="tipo_movimento">
-                    <option value="" {% if not request.GET.tipo_movimento %} selected {% endif %}>----</option>
+                    <option value="" {% if not request.GET.tipo_movimento %} selected {% endif %}>Movimento de Caixa</option>
 
                     {% for itens in tipo_movimento %}
                         <!-- <option value="{{ itens.id }}" {% if request.GET.conta == itens.id %} selected {% endif %}>{{ itens.conta }}</option> -->
