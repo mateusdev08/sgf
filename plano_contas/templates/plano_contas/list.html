@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Plano de Contas{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert 
+            {% if message.tags == 'error' %}alert-danger
+            {% elif message.tags == 'info' %}alert-primary
+            {% elif message.tags == 'success' %}alert-success
+            {% else %}alert-secondary{% endif %}
+            alert-dismissible fade show" role="alert">
+            <span class="me-2">•</span>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Plano de Contas</h2>
+</div>
+
+<!-- Filtro Select-->
+<div class="row mb-3">
+    <div class="col-md-6">
+        <form method="get" action="{% url 'plano_contas:list' %}">
+            <div class="input-group">
+                <select class="form-select" name="natureza">
+                    <option value="" {% if not request.GET.natureza %} selected {% endif %}>Natureza</option>
+
+                    {% for itens in natureza %}
+                        <!-- <option value="{{ itens.id }}" {% if request.GET.conta == itens.id %} selected {% endif %}>{{ itens.conta }}</option> -->
+                        <option value="{{ itens.id }}" {% if request.GET.natureza == itens.id|stringformat:"s" %} selected {% endif %}>{{ itens.natureza }}</option>
+                    {% endfor %}
+
+                </select>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-filter"></i> Filtrar
+                </button>
+                {% if request.GET.natureza %} <!-- Nome do campo -->
+                    <a href="{% url 'plano_contas:list' %}" class="btn btn-danger">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="d-flex mb-4">
+    <a href="{% url 'plano_contas:create' %}" class="btn btn-success ms-auto bi bi-plus-square"> Novo Plano</a>
+</div>
+
+<div class="card">
+    <div class="card-body"> <!-- Adicionar a class table-responsive -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Código Classe</th>
+                    <th>Classe</th>
+                    <th>Código Grupo</th>
+                    <th>Grupo</th>
+                    <th>Código Natureza</th>
+                    <th>Natureza</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plano in planos %}
+                <tr>
+                    <td>{{ plano.id }}</td>
+                    <td>{{ plano.cod_classe }}</td>
+                    <td>{{ plano.classe }}</td>
+                    <td>{{ plano.cod_grupo }}</td>
+                    <td>{{ plano.grupo }}</td>
+                    <td>{{ plano.cod_natureza }}</td>
+                    <td>{{ plano.natureza }}</td>
+                    <td>
+                        <a href="{% url 'plano_contas:detail' plano.id %}" class="btn btn-sm btn-info bi bi-eye"></a>
+                        <a href="{% url 'plano_contas:update' plano.id %}" class="btn btn-sm btn-warning bi bi-pencil"></a>
+                        <a href="{% url 'plano_contas:delete' plano.id %}" class="btn btn-sm btn-danger bi bi-trash3"></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">Nenhum plano de contas cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Paginação -->
+        {% if is_paginated %}
+            <nav aria-label="Navegação de páginas">
+                <ul class="pagination justify-content-center mt-4">
+                    <!-- Botão Anterior -->
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.plano %}&plano={{ request.GET.plano }}{% endif %}" aria-label="Anterior">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Anterior">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                    <!-- Páginas Numeradas -->
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <a class="page-link" href="?page={{ num }}{% if request.GET.plano %}&plano={{ request.GET.plano }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if request.GET.plano %}&plano={{ request.GET.plano }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    <!-- Botão Próximo -->
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.plano %}&plano={{ request.GET.plano }}{% endif %}" aria-label="Próximo">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Próximo">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+
+        <div class="mb-3 text-center">
+            <small class="text-muted">
+                Exibindo {{ page_obj.start_index }} - {{ page_obj.end_index }} de {{ paginator.count }} registro(s)
+            </small>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

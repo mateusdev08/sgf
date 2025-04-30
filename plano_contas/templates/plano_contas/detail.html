@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Detalhes do Plano{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Detalhes do Plano de Contas</h3>
+        <div>
+            <a href="{% url 'plano_contas:update' plano.id %}" class="btn btn-warning bi bi-pencil"></a>
+            <a href="{% url 'plano_contas:delete' plano.id %}" class="btn btn-danger bi bi-trash3"></a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Código Classe:</dt>
+            <dd class="col-sm-9">{{ plano.cod_classe }}</dd>
+            
+            <dt class="col-sm-3">Classe:</dt>
+            <dd class="col-sm-9">{{ plano.classe }}</dd>
+
+            <dt class="col-sm-3">Código Grupo:</dt>
+            <dd class="col-sm-9">{{ plano.cod_grupo }}</dd>
+
+            <dt class="col-sm-3">Grupo:</dt>
+            <dd class="col-sm-9">{{ plano.grupo }}</dd>
+            
+            <dt class="col-sm-3">Código Natureza:</dt>
+            <dd class="col-sm-9">{{ plano.cod_natureza }}</dd>
+
+            <dt class="col-sm-3">Natureza:</dt>
+            <dd class="col-sm-9">{{ plano.natureza }}</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'plano_contas:list' %}" class="btn btn-secondary">Voltar</a>
+    </div>
+</div>
+{% endblock %}
