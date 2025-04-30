@@ -177,6 +177,11 @@
                         <i class="bi bi-currency-dollar"></i> Forma de Pagamento
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/plano-contas/' in request.path %}active{% endif %}" href="{% url 'plano_contas:list' %}">
+                        <i class="bi bi-table"></i> Plano de Contas
+                    </a>
+                </li>
                 <!-- Adicione mais links do menu conforme necessário -->
             </ul>
         </div>
