@@ -29,4 +29,5 @@ urlpatterns = [
     path('status-movimento/', include('status_movimento.urls')),
     path('forma-pagamento/', include('forma_pagamento.urls')),
     path('plano-contas/', include('plano_contas.urls')),
+    path('lancamento-financeiro/', include('lancamento_financeiro.urls')),
 ]
