@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}SGF - Lançamentos Financeiros{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert 
+            {% if message.tags == 'error' %}alert-danger
+            {% elif message.tags == 'info' %}alert-primary
+            {% elif message.tags == 'success' %}alert-success
+            {% else %}alert-secondary{% endif %}
+            alert-dismissible fade show" role="alert">
+            <span class="me-2">•</span>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Lançamentos Financeiros</h2>
+</div>
+
+<!-- Filtros -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5>Filtros</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" action="{% url 'lancamento_financeiro:list' %}">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Descrição</label>
+                    <input type="text" name="descricao" class="form-control" value="{{ request.GET.descricao|default:'' }}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Data Início</label>
+                    <input type="date" name="data_inicio" class="form-control" value="{{ request.GET.data_inicio|default:'' }}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Data Fim</label>
+                    <input type="date" name="data_fim" class="form-control" value="{{ request.GET.data_fim|default:'' }}">
+                </div>
+            </div>
+            <div class="d-flex">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-filter"></i> Filtrar
+                </button>
+                {% if request.GET %}
+                    <a href="{% url 'lancamento_financeiro:list' %}" class="btn btn-danger ms-2">
+                        <i class="bi bi-x-lg"></i> Limpar Filtros
+                    </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="d-flex mb-4">
+    <a href="{% url 'lancamento_financeiro:create' %}" class="btn btn-success ms-auto bi bi-plus-square"> Novo Lançamento</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Data Vencimento</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Forma Pagamento</th>
+                        <th>Parcela</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lancamento in lancamentos %}
+                    <tr>
+                        <td>{{ lancamento.data_vencimento|date:"d/m/Y" }}</td>
+                        <td>{{ lancamento.descricao|truncatechars:50 }}</td>
+                        <td>R$ {{ lancamento.valor }}</td>
+                        <td>{{ lancamento.forma_pagamento }}</td>
+                        <td>{{ lancamento.parcela }}/{{ lancamento.quantidade_parcela }}</td>
+                        <td>{{ lancamento.status_movimento }}</td>
+                        <td>
+                            <a href="{% url 'lancamento_financeiro:detail' lancamento.id %}" class="btn btn-sm btn-info bi bi-eye"></a>
+                            <a href="{% url 'lancamento_financeiro:update' lancamento.id %}" class="btn btn-sm btn-warning bi bi-pencil"></a>
+                            <a href="{% url 'lancamento_financeiro:delete' lancamento.id %}" class="btn btn-sm btn-danger bi bi-trash3"></a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">Nenhum lançamento financeiro cadastrado.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginação -->
+        {% if is_paginated %}
+            <nav aria-label="Navegação de páginas">
+                <ul class="pagination justify-content-center mt-4">
+                    <!-- Botão Anterior -->
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.descricao %}&descricao={{ request.GET.descricao }}{% endif %}{% if request.GET.data_inicio %}&data_inicio={{ request.GET.data_inicio }}{% endif %}{% if request.GET.data_fim %}&data_fim={{ request.GET.data_fim }}{% endif %}" aria-label="Anterior">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Anterior">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    
+                    <!-- Páginas Numeradas -->
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <a class="page-link" href="?page={{ num }}{% if request.GET.descricao %}&descricao={{ request.GET.descricao }}{% endif %}{% if request.GET.data_inicio %}&data_inicio={{ request.GET.data_inicio }}{% endif %}{% if request.GET.data_fim %}&data_fim={{ request.GET.data_fim }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if request.GET.descricao %}&descricao={{ request.GET.descricao }}{% endif %}{% if request.GET.data_inicio %}&data_inicio={{ request.GET.data_inicio }}{% endif %}{% if request.GET.data_fim %}&data_fim={{ request.GET.data_fim }}{% endif %}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    <!-- Botão Próximo -->
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.descricao %}&descricao={{ request.GET.descricao }}{% endif %}{% if request.GET.data_inicio %}&data_inicio={{ request.GET.data_inicio }}{% endif %}{% if request.GET.data_fim %}&data_fim={{ request.GET.data_fim }}{% endif %}" aria-label="Próximo">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Próximo">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+
+        <div class="mb-3 text-center">
+            <small class="text-muted">
+                Exibindo {{ page_obj.start_index }} - {{ page_obj.end_index }} de {{ paginator.count }} registro(s)
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock %}
