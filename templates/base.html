@@ -182,6 +182,11 @@
                         <i class="bi bi-table"></i> Plano de Contas
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/lancamento-financeiro/' in request.path %}active{% endif %}" href="{% url 'lancamento_financeiro:list' %}">
+                        <i class="bi bi-cash-coin"></i> Lançamento Financeiro
+                    </a>
+                </li>
                 <!-- Adicione mais links do menu conforme necessário -->
             </ul>
         </div>
