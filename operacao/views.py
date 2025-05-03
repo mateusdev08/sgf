@@ -11,7 +11,7 @@ class OperacaoListView(ListView):
     template_name = 'operacao/list.html'
     context_object_name = 'operacoes'  # Primeira palavra no plural
     paginate_by = 10  # Número de itens por página - Paginação
-    ordering = ['tipo_operacao']  # Ordenação padrão - Paginação
+    ordering = ['id']  # Ordenação padrão - Paginação
 
     # Início do filtro tipo texto
     def get_queryset(self):

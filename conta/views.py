@@ -11,7 +11,7 @@ class ContaListView(ListView):
     template_name = 'conta/list.html'
     context_object_name = 'contas'  # Primeira palavra no plural
     paginate_by = 10  # Número de itens por página - Paginação
-    ordering = ['conta']  # Ordenação padrão - Paginação
+    ordering = ['id']  # Ordenação padrão - Paginação
 
     # Início do filtro tipo texto
     def get_queryset(self):

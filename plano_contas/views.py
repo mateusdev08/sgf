@@ -11,7 +11,7 @@ class PlanoContasListView(ListView):
     template_name = 'plano_contas/list.html'
     context_object_name = 'planos'  # Primeira palavra no plural
     paginate_by = 10  # Número de itens por página - Paginação
-    ordering = ['cod_natureza']  # Ordenação padrão - Paginação
+    ordering = ['id']  # Ordenação padrão - Paginação
 
     # Início do filtro tipo texto
     def get_queryset(self):
@@ -44,7 +44,8 @@ class PlanoContasCreateView(CreateView):
 
     # Início da mensagem de sucesso
     def form_valid(self, form):
-        messages.success(self.request, 'Plano de contas cadastrado com sucesso!')
+        messages.success(
+            self.request, 'Plano de contas cadastrado com sucesso!')
         return super().form_valid(form)
     # Final da mensagem de sucesso
 
