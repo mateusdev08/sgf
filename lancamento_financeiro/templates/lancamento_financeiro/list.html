@@ -67,24 +67,32 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Data Vencimento</th>
-                        <th>Descrição</th>
-                        <th>Valor</th>
+                        <th>Conta</th>
+                        <th>Cartão</th>
                         <th>Forma Pagamento</th>
-                        <th>Parcela</th>
                         <th>Status</th>
+                        <th>Parcela</th>
+                        <th>Valor</th>
+                        <th>Natureza</th>
+                        <th>Descrição</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for lancamento in lancamentos %}
                     <tr>
+                        <td>{{ lancamento.id }}</td>
                         <td>{{ lancamento.data_vencimento|date:"d/m/Y" }}</td>
-                        <td>{{ lancamento.descricao|truncatechars:50 }}</td>
-                        <td>R$ {{ lancamento.valor }}</td>
+                        <td>{{ lancamento.conta }}</td>
+                        <td>{{ lancamento.cartao }}</td>
                         <td>{{ lancamento.forma_pagamento }}</td>
-                        <td>{{ lancamento.parcela }}/{{ lancamento.quantidade_parcela }}</td>
                         <td>{{ lancamento.status_movimento }}</td>
+                        <td>{{ lancamento.parcela }}/{{ lancamento.quantidade_parcela }}</td>
+                        <td>R$ {{ lancamento.valor }}</td>
+                        <td>{{ lancamento.natureza }}</td>
+                        <td>{{ lancamento.descricao|truncatechars:50 }}</td>
                         <td>
                             <a href="{% url 'lancamento_financeiro:detail' lancamento.id %}" class="btn btn-sm btn-info bi bi-eye"></a>
                             <a href="{% url 'lancamento_financeiro:update' lancamento.id %}" class="btn btn-sm btn-warning bi bi-pencil"></a>
