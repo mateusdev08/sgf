@@ -36,9 +36,25 @@ class LancamentoFinanceiro(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_alteracao = models.DateTimeField(auto_now=True)
 
+    # Novos campos para armazenar os códigos
+    cod_classe = models.CharField(max_length=100, null=True, blank=True)
+    cod_grupo = models.CharField(max_length=100, null=True, blank=True)
+    cod_natureza = models.CharField(max_length=100, null=True, blank=True)
+
     class Meta:
         verbose_name = 'Lançamento Financeiro'
         verbose_name_plural = 'Lançamentos Financeiros'
 
     def __str__(self):
         return f"Lançamento {self.id} - {self.descricao}"
+
+    def save(self, *args, **kwargs):
+        # Antes de salvar, vamos garantir que os códigos sejam capturados
+        if self.classe and not self.cod_classe:
+            self.cod_classe = self.classe.cod_classe
+        if self.grupo and not self.cod_grupo:
+            self.cod_grupo = self.grupo.cod_grupo
+        if self.natureza and not self.cod_natureza:
+            self.cod_natureza = self.natureza.cod_natureza
+
+        super().save(*args, **kwargs)

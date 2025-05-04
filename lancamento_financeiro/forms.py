@@ -14,20 +14,20 @@ import datetime
 
 class ClasseModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        # Retorna apenas o valor da coluna 'classe'
-        return obj.classe
+        # Retorna o valor formatado para exibição no campo
+        return f"{obj.cod_classe} - {obj.classe}"
 
 
 class GrupoModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        # Retorna apenas o valor da coluna 'grupo'
-        return obj.grupo
+        # Retorna o valor formatado para exibição no campo
+        return f"{obj.cod_grupo} - {obj.grupo}"
 
 
 class NaturezaModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        # Retorna apenas o valor da coluna 'natureza'
-        return obj.natureza
+        # Retorna o valor formatado para exibição no campo
+        return f"{obj.cod_natureza} - {obj.natureza}"
 
 
 class LancamentoFinanceiroForm(forms.ModelForm):
@@ -47,12 +47,18 @@ class LancamentoFinanceiroForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
+    # Adicionando campos ocultos para armazenar os códigos
+    cod_classe = forms.CharField(widget=forms.HiddenInput(), required=False)
+    cod_grupo = forms.CharField(widget=forms.HiddenInput(), required=False)
+    cod_natureza = forms.CharField(widget=forms.HiddenInput(), required=False)
+
     class Meta:
         model = LancamentoFinanceiro
         fields = [
             'data_emissao', 'data_vencimento', 'classe', 'grupo', 'natureza',
             'centro_custo', 'movimento_caixa', 'conta', 'cartao', 'operacao',
-            'status_movimento', 'forma_pagamento', 'quantidade_parcela', 'valor', 'descricao'
+            'status_movimento', 'forma_pagamento', 'quantidade_parcela', 'valor', 'descricao',
+            'cod_classe', 'cod_grupo', 'cod_natureza'
         ]
         widgets = {
             'data_emissao': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
@@ -108,5 +114,17 @@ class LancamentoFinanceiroForm(forms.ModelForm):
         if forma_pagamento and 'cartão' in forma_pagamento.tipo_pagamento.lower() and not cleaned_data.get('cartao'):
             self.add_error(
                 'cartao', 'Cartão é obrigatório para esta forma de pagamento.')
+
+        # Capturar os códigos quando o formulário é validado
+        classe = cleaned_data.get('classe')
+        grupo = cleaned_data.get('grupo')
+        natureza = cleaned_data.get('natureza')
+
+        if classe:
+            cleaned_data['cod_classe'] = classe.cod_classe
+        if grupo:
+            cleaned_data['cod_grupo'] = grupo.cod_grupo
+        if natureza:
+            cleaned_data['cod_natureza'] = natureza.cod_natureza
 
         return cleaned_data

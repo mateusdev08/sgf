@@ -7,6 +7,7 @@ from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 from django.db import transaction
 from .models import LancamentoFinanceiro
+from plano_contas.models import PlanoContas
 from .forms import LancamentoFinanceiroForm
 
 
@@ -52,6 +53,17 @@ class LancamentoFinanceiroCreateView(CreateView):
     def form_valid(self, form):
         # Não salvar o formulário diretamente, vamos tratar conforme as regras
         lancamento = form.save(commit=False)
+
+        # Obter os códigos dos campos PlanoContas
+        classe_obj = form.cleaned_data['classe']
+        grupo_obj = form.cleaned_data['grupo']
+        natureza_obj = form.cleaned_data['natureza']
+
+        # Guardar os objetos relacionados antes de processar
+        classe_id = classe_obj.id if classe_obj else None
+        grupo_id = grupo_obj.id if grupo_obj else None
+        natureza_id = natureza_obj.id if natureza_obj else None
+
         forma_pagamento = form.cleaned_data['forma_pagamento']
         quantidade_parcela = form.cleaned_data['quantidade_parcela']
         data_vencimento_original = form.cleaned_data['data_vencimento']
@@ -77,9 +89,9 @@ class LancamentoFinanceiroCreateView(CreateView):
                     data_emissao=lancamento.data_emissao,
                     data_vencimento=data_vencimento_original +
                     relativedelta(months=i),
-                    classe=lancamento.classe,
-                    grupo=lancamento.grupo,
-                    natureza=lancamento.natureza,
+                    classe_id=classe_id,
+                    grupo_id=grupo_id,
+                    natureza_id=natureza_id,
                     centro_custo=lancamento.centro_custo,
                     movimento_caixa=lancamento.movimento_caixa,
                     conta=lancamento.conta,
@@ -105,9 +117,9 @@ class LancamentoFinanceiroCreateView(CreateView):
                     data_emissao=lancamento.data_emissao,
                     data_vencimento=data_vencimento_original +
                     relativedelta(months=i),
-                    classe=lancamento.classe,
-                    grupo=lancamento.grupo,
-                    natureza=lancamento.natureza,
+                    classe_id=classe_id,
+                    grupo_id=grupo_id,
+                    natureza_id=natureza_id,
                     centro_custo=lancamento.centro_custo,
                     movimento_caixa=lancamento.movimento_caixa,
                     conta=lancamento.conta,
@@ -133,9 +145,9 @@ class LancamentoFinanceiroCreateView(CreateView):
                     data_emissao=lancamento.data_emissao,
                     data_vencimento=data_vencimento_original +
                     relativedelta(months=i),
-                    classe=lancamento.classe,
-                    grupo=lancamento.grupo,
-                    natureza=lancamento.natureza,
+                    classe_id=classe_id,
+                    grupo_id=grupo_id,
+                    natureza_id=natureza_id,
                     centro_custo=lancamento.centro_custo,
                     movimento_caixa=lancamento.movimento_caixa,
                     conta=lancamento.conta,
@@ -170,9 +182,15 @@ class LancamentoFinanceiroUpdateView(UpdateView):
     success_url = reverse_lazy('lancamento_financeiro:list')
 
     def form_valid(self, form):
+        # Obter os códigos dos campos PlanoContas antes de salvar
+        lancamento = form.save(commit=False)
+
+        # Mantém os IDs dos objetos relacionados enquanto atualiza os dados
+        lancamento.save()
+
         messages.info(
             self.request, 'Lançamento financeiro atualizado com sucesso!')
-        return super().form_valid(form)
+        return redirect(self.success_url)
 
 
 class LancamentoFinanceiroDetailView(DetailView):

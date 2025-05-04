@@ -230,5 +230,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const event = new Event('change');
     formaPagamentoSelect.dispatchEvent(event);
 });
+
+// Lógica para armazenar as colunas corretas dos campos classe, grupo e natureza
+document.addEventListener('DOMContentLoaded', function() {
+    // Campos do formulário
+    const classeSelect = document.getElementById('id_classe');
+    const grupoSelect = document.getElementById('id_grupo');
+    const naturezaSelect = document.getElementById('id_natureza');
+    
+    // Campos ocultos para os códigos
+    const codClasseInput = document.getElementById('id_cod_classe');
+    const codGrupoInput = document.getElementById('id_cod_grupo');
+    const codNaturezaInput = document.getElementById('id_cod_natureza');
+    
+    // Função para atualizar os campos ocultos quando os selects mudam
+    function updateCodFields() {
+        if (classeSelect.selectedIndex > 0) {
+            const selectedOption = classeSelect.options[classeSelect.selectedIndex];
+            // Extrair o código da opção selecionada (formato: "COD_CLASSE - Descrição")
+            const codClasse = selectedOption.text.split(' - ')[0].trim();
+            codClasseInput.value = codClasse;
+        }
+        
+        if (grupoSelect.selectedIndex > 0) {
+            const selectedOption = grupoSelect.options[grupoSelect.selectedIndex];
+            const codGrupo = selectedOption.text.split(' - ')[0].trim();
+            codGrupoInput.value = codGrupo;
+        }
+        
+        if (naturezaSelect.selectedIndex > 0) {
+            const selectedOption = naturezaSelect.options[naturezaSelect.selectedIndex];
+            const codNatureza = selectedOption.text.split(' - ')[0].trim();
+            codNaturezaInput.value = codNatureza;
+        }
+    }
+    
+    // Adicionar event listeners para os selects
+    classeSelect.addEventListener('change', updateCodFields);
+    grupoSelect.addEventListener('change', updateCodFields);
+    naturezaSelect.addEventListener('change', updateCodFields);
+    
+    // Atualizar campos ao carregar a página (para edições)
+    updateCodFields();
+});
 </script>
 {% endblock %}
