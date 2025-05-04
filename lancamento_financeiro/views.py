@@ -15,8 +15,9 @@ class LancamentoFinanceiroListView(ListView):
     model = LancamentoFinanceiro
     template_name = 'lancamento_financeiro/list.html'
     context_object_name = 'lancamentos'
-    paginate_by = 10
-    ordering = ['-data_vencimento']
+    paginate_by = 25
+    # ordering = ['-data_vencimento']
+    ordering = ['-id']
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -81,14 +82,14 @@ class LancamentoFinanceiroCreateView(CreateView):
         tipo_pagamento = forma_pagamento.tipo_pagamento.lower()
 
         # Caso 1: Pagamento à vista - apenas um lançamento
-        if 'Vista' in tipo_pagamento:
+        if 'vista' in tipo_pagamento:
             lancamento.parcela = 1
             lancamento.save()
             messages.success(
                 self.request, 'Lançamento financeiro criado com sucesso!')
 
         # Caso 2: Pagamento parcelado - múltiplos lançamentos com valores divididos
-        elif 'Parcelado' in tipo_pagamento and quantidade_parcela > 1:
+        elif 'parcelado' in tipo_pagamento and quantidade_parcela > 1:
             valor_parcela = valor_total / quantidade_parcela
 
             for i in range(quantidade_parcela):
@@ -118,7 +119,7 @@ class LancamentoFinanceiroCreateView(CreateView):
                 self.request, f'Lançamento financeiro parcelado em {quantidade_parcela} parcelas criado com sucesso!')
 
         # Caso 3: Pagamento recorrente - múltiplos lançamentos com mesmo valor
-        elif 'Recorrente' in tipo_pagamento and quantidade_parcela > 1:
+        elif 'recorrente' in tipo_pagamento and quantidade_parcela > 1:
             for i in range(quantidade_parcela):
                 # Criar um novo lançamento para cada recorrência
                 novo_lancamento = LancamentoFinanceiro(
@@ -146,7 +147,7 @@ class LancamentoFinanceiroCreateView(CreateView):
                 self.request, f'Lançamento financeiro recorrente criado com sucesso para {quantidade_parcela} meses!')
 
         # Caso 4: Pagamento repetido - múltiplos lançamentos com mesmo valor e parcela
-        elif 'Repetir' in tipo_pagamento and quantidade_parcela > 1:
+        elif 'repetir' in tipo_pagamento and quantidade_parcela > 1:
             for i in range(quantidade_parcela):
                 # Criar um novo lançamento para cada repetição
                 novo_lancamento = LancamentoFinanceiro(
@@ -164,7 +165,7 @@ class LancamentoFinanceiroCreateView(CreateView):
                     status_movimento=lancamento.status_movimento,
                     forma_pagamento=lancamento.forma_pagamento,
                     quantidade_parcela=quantidade_parcela,
-                    parcela=1,  # Parcela sempre 1 neste caso
+                    parcela=i + 1,  # Número da parcela começando em 1
                     valor=valor_total,
                     descricao=lancamento.descricao
                 )
