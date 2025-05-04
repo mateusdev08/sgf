@@ -232,6 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Lógica para armazenar as colunas corretas dos campos classe, grupo e natureza
+// Adicione esse script ao seu arquivo form.html
 document.addEventListener('DOMContentLoaded', function() {
     // Campos do formulário
     const classeSelect = document.getElementById('id_classe');
@@ -243,32 +244,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const codGrupoInput = document.getElementById('id_cod_grupo');
     const codNaturezaInput = document.getElementById('id_cod_natureza');
     
+    // Função para extrair o código da opção selecionada (formato: "COD_XXXX - Descrição")
+    function extractCode(optionText) {
+        if (!optionText) return '';
+        const parts = optionText.split(' - ');
+        return parts.length > 0 ? parts[0].trim() : '';
+    }
+    
     // Função para atualizar os campos ocultos quando os selects mudam
     function updateCodFields() {
-        if (classeSelect.selectedIndex > 0) {
+        if (classeSelect && classeSelect.selectedIndex > 0) {
             const selectedOption = classeSelect.options[classeSelect.selectedIndex];
-            // Extrair o código da opção selecionada (formato: "COD_CLASSE - Descrição")
-            const codClasse = selectedOption.text.split(' - ')[0].trim();
-            codClasseInput.value = codClasse;
+            const codClasse = extractCode(selectedOption.text);
+            if (codClasseInput) codClasseInput.value = codClasse;
         }
         
-        if (grupoSelect.selectedIndex > 0) {
+        if (grupoSelect && grupoSelect.selectedIndex > 0) {
             const selectedOption = grupoSelect.options[grupoSelect.selectedIndex];
-            const codGrupo = selectedOption.text.split(' - ')[0].trim();
-            codGrupoInput.value = codGrupo;
+            const codGrupo = extractCode(selectedOption.text);
+            if (codGrupoInput) codGrupoInput.value = codGrupo;
         }
         
-        if (naturezaSelect.selectedIndex > 0) {
+        if (naturezaSelect && naturezaSelect.selectedIndex > 0) {
             const selectedOption = naturezaSelect.options[naturezaSelect.selectedIndex];
-            const codNatureza = selectedOption.text.split(' - ')[0].trim();
-            codNaturezaInput.value = codNatureza;
+            const codNatureza = extractCode(selectedOption.text);
+            if (codNaturezaInput) codNaturezaInput.value = codNatureza;
         }
     }
     
-    // Adicionar event listeners para os selects
-    classeSelect.addEventListener('change', updateCodFields);
-    grupoSelect.addEventListener('change', updateCodFields);
-    naturezaSelect.addEventListener('change', updateCodFields);
+    // Adicionar event listeners para os selects se eles existirem
+    if (classeSelect) {
+        classeSelect.addEventListener('change', updateCodFields);
+    }
+    
+    if (grupoSelect) {
+        grupoSelect.addEventListener('change', updateCodFields);
+    }
+    
+    if (naturezaSelect) {
+        naturezaSelect.addEventListener('change', updateCodFields);
+    }
     
     // Atualizar campos ao carregar a página (para edições)
     updateCodFields();

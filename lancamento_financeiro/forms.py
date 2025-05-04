@@ -78,13 +78,28 @@ class LancamentoFinanceiroForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Filtrar os campos de plano de contas
-        self.fields['classe'].queryset = PlanoContas.objects.exclude(
-            classe__isnull=True).exclude(classe='').order_by('classe')
+        # Obter valores distintos para classe
+        classes_distintas = {}
+        for item in PlanoContas.objects.exclude(classe__isnull=True).exclude(classe='').order_by('classe'):
+            # Se essa classe ainda não foi adicionada, adicione-a
+            if item.classe not in classes_distintas:
+                classes_distintas[item.classe] = item.id
 
-        self.fields['grupo'].queryset = PlanoContas.objects.exclude(
-            grupo__isnull=True).exclude(grupo='').order_by('grupo')
+        # Filtrar as QuerySets para incluir apenas um registro por valor distinto
+        self.fields['classe'].queryset = PlanoContas.objects.filter(
+            id__in=list(classes_distintas.values())).order_by('classe')
 
+        # Obter valores distintos para grupo
+        grupos_distintos = {}
+        for item in PlanoContas.objects.exclude(grupo__isnull=True).exclude(grupo='').order_by('grupo'):
+            # Se esse grupo ainda não foi adicionado, adicione-o
+            if item.grupo not in grupos_distintos:
+                grupos_distintos[item.grupo] = item.id
+
+        self.fields['grupo'].queryset = PlanoContas.objects.filter(
+            id__in=list(grupos_distintos.values())).order_by('grupo')
+
+        # Para natureza, mantemos todos já que são específicos
         self.fields['natureza'].queryset = PlanoContas.objects.exclude(
             natureza__isnull=True).exclude(natureza='').order_by('natureza')
 

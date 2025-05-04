@@ -54,10 +54,18 @@ class LancamentoFinanceiroCreateView(CreateView):
         # Não salvar o formulário diretamente, vamos tratar conforme as regras
         lancamento = form.save(commit=False)
 
-        # Obter os códigos dos campos PlanoContas
+        # Obter os objetos e códigos dos campos PlanoContas
         classe_obj = form.cleaned_data['classe']
         grupo_obj = form.cleaned_data['grupo']
         natureza_obj = form.cleaned_data['natureza']
+
+        # Armazenar os códigos explicitamente
+        if classe_obj:
+            lancamento.cod_classe = classe_obj.cod_classe
+        if grupo_obj:
+            lancamento.cod_grupo = grupo_obj.cod_grupo
+        if natureza_obj:
+            lancamento.cod_natureza = natureza_obj.cod_natureza
 
         # Guardar os objetos relacionados antes de processar
         classe_id = classe_obj.id if classe_obj else None
